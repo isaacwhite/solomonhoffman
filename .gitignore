@@ -37,4 +37,4 @@ xmlrpc.php
 /themes
 
 #Ignore mac stuff
-*.DS_Store
+.DS_Store
