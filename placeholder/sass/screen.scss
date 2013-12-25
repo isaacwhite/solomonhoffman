@@ -1,0 +1,111 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+@font-face {
+	font-family: "Junction";
+	src: url("../fonts/Junction-webfont.woff");
+	src: url("../fonts/Junction-webfont.svg");
+	src: url("../fonts/Junction-webfont.eot");
+	src: url("../fonts/Junction-webfont.ttf");
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.background {
+	background-image: url("../images/solomon.jpg");
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-size: cover;
+	background-position: 0 0;
+	top: 0;
+	z-index: -1;
+}
+
+.coming-soon {
+	font-family: "Junction", arial, sans-serif;
+}
+
+html {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	color: white;
+	text-align: center;
+	font-family: arial, helvetica, sans-serif;
+}
+
+h1 {
+	font-size: 1.5rem;
+	padding: 0 1rem;
+	text-shadow: black 0 0 px; 
+	margin-top: 30%;
+	font-weight: bold;
+	line-height: 1.5;
+	margin-bottom: 1rem;
+	@media all and (min-width: 40em) {
+		font-size: 3rem;
+		margin-bottom: 4rem;
+	}
+	padding: 1rem;
+}
+
+h2 {	
+	color: #5b77e2;
+	max-width: 46rem;
+	display: block;
+	text-transform: uppercase;
+	margin: 0 auto;
+	padding:1rem;
+	@media all and (min-width: 40em) {
+		padding: 3rem;
+		font-size: 2rem;
+		
+	}
+	&:after {
+		display: table;
+		content:"";
+		clear:both;
+	}
+}
+
+.countdown_amount {
+	font-family: arial, helvetica, sans-serif;
+	margin-bottom: 0.5rem;
+}
+
+.hasCountdown {
+	border: none;
+	background-color: rgba(0,0,0,.7);
+}
+
+.hasCountdown span {
+	display:block;
+}
+footer {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+
+}
+a {
+	color: #d7d7d7;
+	text-decoration: none;
+	border-bottom: 1px #d7d7d7 dotted;
+	display: inline-block;
+	padding: .125rem;
+	border-radius: 1px;
+	transition: all .5s;
+
+	&:hover {
+		background-color: white;
+		color: black;
+	}
+}
