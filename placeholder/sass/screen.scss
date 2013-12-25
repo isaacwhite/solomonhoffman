@@ -25,6 +25,7 @@
 	background-size: cover;
 	background-position: 0 0;
 	top: 0;
+	left: 0;
 	z-index: -1;
 }
 
@@ -40,21 +41,48 @@ html {
 	color: white;
 	text-align: center;
 	font-family: arial, helvetica, sans-serif;
+	min-height: 26rem;
+
+	@media all and (min-width:32em ) {
+		min-height: 30rem;
+	}
+
+	@media all and (min-width: 40em) {
+		min-height: 35rem;
+	}
 }
 
 h1 {
 	font-size: 1.5rem;
-	padding: 0 1rem;
-	text-shadow: black 0 0 px; 
-	margin-top: 30%;
+	text-shadow: black 0 0 .25rem; 
+	margin-top: 2rem;
 	font-weight: bold;
 	line-height: 1.5;
 	margin-bottom: 1rem;
+
+	@media all and (min-height:30em) {
+		margin-top: 8rem;
+	}
+
+	span{
+		display: block;
+	}
+	@media all and (min-width: 25em) {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+	@media all and (min-width: 32em) {
+		font-size: 2.5rem;
+		margin-bottom: 3rem;
+	}
 	@media all and (min-width: 40em) {
 		font-size: 3rem;
 		margin-bottom: 4rem;
+		text-shadow: black 0 0 .75rem;
 	}
-	padding: 1rem;
+	@media all and (min-width: 50em) {
+		font-size: 4rem;
+	}
 }
 
 h2 {	
@@ -64,6 +92,10 @@ h2 {
 	text-transform: uppercase;
 	margin: 0 auto;
 	padding:1rem;
+	@media all and (min-width: 30em) {
+		font-size: 1.5rem;
+		padding: 2rem;
+	}
 	@media all and (min-width: 40em) {
 		padding: 3rem;
 		font-size: 2rem;
@@ -74,6 +106,9 @@ h2 {
 		content:"";
 		clear:both;
 	}
+}
+.main-wrapper {
+	padding: 1rem;
 }
 
 .countdown_amount {
@@ -93,6 +128,7 @@ footer {
 	position: absolute;
 	bottom: 1rem;
 	right: 1rem;
+	text-shadow: black 0 0 .25rem; 
 
 }
 a {
