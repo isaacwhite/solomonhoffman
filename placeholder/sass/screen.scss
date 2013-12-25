@@ -89,7 +89,7 @@ h2 {
 	color: #5b77e2;
 	max-width: 46rem;
 	display: block;
-	text-transform: uppercase;
+	text-transform: lowercase;
 	margin: 0 auto;
 	padding:1rem;
 	@media all and (min-width: 30em) {
@@ -143,5 +143,6 @@ a {
 	&:hover {
 		background-color: white;
 		color: black;
+		text-shadow: black 0 0 0;
 	}
 }
