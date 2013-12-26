@@ -67,38 +67,25 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
-@font-face {
-  font-family: "Junction";
-  src: url("../fonts/Junction-webfont.woff");
-  src: url("../fonts/Junction-webfont.svg");
-  src: url("../fonts/Junction-webfont.eot");
-  src: url("../fonts/Junction-webfont.ttf");
-}
-
 /* line 16, ../sass/screen.scss */
 * {
   box-sizing: border-box;
 }
 
-/* line 20, ../sass/screen.scss */
+/* line 48, ../sass/screen.scss */
 .background {
   background-image: url("../images/solomon.jpg");
   position: absolute;
   height: 100%;
   width: 100%;
   background-size: cover;
-  background-position: 0 0;
+  background-position: top center;
   top: 0;
   left: 0;
   z-index: -1;
 }
 
-/* line 32, ../sass/screen.scss */
-.coming-soon {
-  font-family: "Junction", arial, sans-serif;
-}
-
-/* line 36, ../sass/screen.scss */
+/* line 65, ../sass/screen.scss */
 html {
   position: relative;
   height: 100%;
@@ -106,57 +93,61 @@ html {
   background-color: black;
   color: white;
   text-align: center;
-  font-family: arial, helvetica, sans-serif;
+  font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
+  font-weight: 300;
+  font-style: normal;
   min-height: 26rem;
 }
 @media all and (min-width: 32em) {
-  /* line 36, ../sass/screen.scss */
+  /* line 65, ../sass/screen.scss */
   html {
     min-height: 30rem;
   }
 }
 @media all and (min-width: 40em) {
-  /* line 36, ../sass/screen.scss */
+  /* line 65, ../sass/screen.scss */
   html {
     min-height: 35rem;
   }
 }
 
-/* line 55, ../sass/screen.scss */
+/* line 84, ../sass/screen.scss */
 h1 {
   font-size: 1.5rem;
   text-shadow: black 0 0 .25rem;
   margin-top: 2rem;
-  font-weight: bold;
   line-height: 1.5;
   margin-bottom: 1rem;
+  font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 @media all and (min-height: 30em) {
-  /* line 55, ../sass/screen.scss */
+  /* line 84, ../sass/screen.scss */
   h1 {
     margin-top: 8rem;
   }
 }
-/* line 67, ../sass/screen.scss */
+/* line 96, ../sass/screen.scss */
 h1 span {
   display: block;
 }
 @media all and (min-width: 25em) {
-  /* line 55, ../sass/screen.scss */
+  /* line 84, ../sass/screen.scss */
   h1 {
     font-size: 2rem;
     margin-bottom: 2rem;
   }
 }
 @media all and (min-width: 32em) {
-  /* line 55, ../sass/screen.scss */
+  /* line 84, ../sass/screen.scss */
   h1 {
     font-size: 2.5rem;
     margin-bottom: 3rem;
   }
 }
 @media all and (min-width: 40em) {
-  /* line 55, ../sass/screen.scss */
+  /* line 84, ../sass/screen.scss */
   h1 {
     font-size: 3rem;
     margin-bottom: 4rem;
@@ -164,65 +155,68 @@ h1 span {
   }
 }
 @media all and (min-width: 50em) {
-  /* line 55, ../sass/screen.scss */
+  /* line 84, ../sass/screen.scss */
   h1 {
     font-size: 4rem;
   }
 }
 
-/* line 88, ../sass/screen.scss */
+/* line 117, ../sass/screen.scss */
 h2 {
-  color: #5b77e2;
+  color: #2f67a6;
   max-width: 46rem;
   display: block;
-  text-transform: lowercase;
+  text-transform: uppercase;
   margin: 0 auto;
   padding: 1rem;
+  font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
+  font-weight: 500;
+  font-style: normal;
 }
 @media all and (min-width: 30em) {
-  /* line 88, ../sass/screen.scss */
+  /* line 117, ../sass/screen.scss */
   h2 {
     font-size: 1.5rem;
     padding: 2rem;
   }
 }
 @media all and (min-width: 40em) {
-  /* line 88, ../sass/screen.scss */
+  /* line 117, ../sass/screen.scss */
   h2 {
     padding: 3rem;
     font-size: 2rem;
   }
 }
-/* line 104, ../sass/screen.scss */
+/* line 134, ../sass/screen.scss */
 h2:after {
   display: table;
   content: "";
   clear: both;
 }
 
-/* line 110, ../sass/screen.scss */
+/* line 140, ../sass/screen.scss */
 .main-wrapper {
   padding: 1rem;
 }
 
-/* line 114, ../sass/screen.scss */
+/* line 144, ../sass/screen.scss */
 .countdown_amount {
   font-family: arial, helvetica, sans-serif;
   margin-bottom: 0.5rem;
 }
 
-/* line 119, ../sass/screen.scss */
+/* line 149, ../sass/screen.scss */
 .hasCountdown {
   border: none;
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* line 124, ../sass/screen.scss */
+/* line 154, ../sass/screen.scss */
 .hasCountdown span {
   display: block;
 }
 
-/* line 127, ../sass/screen.scss */
+/* line 157, ../sass/screen.scss */
 footer {
   position: absolute;
   bottom: 1rem;
@@ -230,9 +224,9 @@ footer {
   text-shadow: black 0 0 .25rem;
 }
 
-/* line 134, ../sass/screen.scss */
+/* line 164, ../sass/screen.scss */
 a {
-  color: #d7d7d7;
+  color: white;
   text-decoration: none;
   border-bottom: 1px #d7d7d7 dotted;
   display: inline-block;
@@ -240,7 +234,7 @@ a {
   border-radius: 1px;
   transition: all .5s;
 }
-/* line 143, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 a:hover {
   background-color: white;
   color: black;
