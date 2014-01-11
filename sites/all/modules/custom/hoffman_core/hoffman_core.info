@@ -1,0 +1,6 @@
+name = Hoffman Core
+description = Provides core features for Solomon Hoffman.com
+package = Hoffman
+core = 7.x
+version = 7.x-1.0-alpha
+

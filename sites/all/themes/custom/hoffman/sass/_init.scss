@@ -85,8 +85,8 @@ $arial:           Arial, Helvetica, "Nimbus Sans L", sans-serif;
 $courier:         "Courier New", "DejaVu Sans Mono", monospace, sans-serif;
 
 // Now create some variables for the font stacks we want to use on this site.
-$base-font-family: $verdana; // The font family set on the html element.
-$font-body:        $verdana;
+$base-font-family: $helvetica; // The font family set on the html element.
+$font-body:        $arial;
 $font-monospace:   $courier;
 
 
@@ -95,7 +95,7 @@ $font-monospace:   $courier;
 //
 
 // The amount lists, blockquotes and comments are indented.
-$indent-amount: 30px;
+$indent-amount: 2rem;
 
 // The height of the navigation container.
 $nav-height: 3em;

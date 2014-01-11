@@ -1,0 +1,225 @@
+<?php
+// function hoffman_core_init() {
+//  dpm("This function is getting called");
+//  $the_view = views_get_view("test_view");
+//  // dpm($the_view);
+//  $the_view->set_display('page');
+//  $the_view->set_current_page(1);
+//  $the_view->execute();
+
+//  dpm($the_view->result);
+
+//  $the_same_view = views_get_view("test_view");
+//  // dpm($the_same_view);
+//  $the_same_view->set_display('page');
+//  $the_same_view->set_current_page(0);
+//  $the_same_view->execute();
+
+//  dpm($the_same_view->result);
+
+// }
+/*HOOKS*/
+
+/**
+ * Implements hook menu
+ * Provides two json endpoints :D
+ */
+function hoffman_core_menu() {
+  $items['stagehand/get/%'] = array(
+    'page callback' => 'hoffman_core_get_data',
+    'page arguments' => array(2),
+    'access arguments' => array('access content')
+  );
+  $items['stagehand/set/%'] = array(
+    'page callback' => 'hoffman_core_set_data',
+    'page arguments' => array(2),
+    'access arguments' => array('access content')
+  );
+
+  return $items;
+}
+
+function hoffman_core_image_default_styles() {
+  $styles = array();
+
+  $styles['hoffman_core_thumb'] = array(
+    'label' => 'Hoffman core thumbnail',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 300,
+          'height' => 300,
+          'upscale' => 0,
+        ),
+        'weight' => 0
+      )
+    )
+  );
+  $styles['hoffman_core_full'] = array(
+    'label' => 'Hoffman core large',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 960,
+          'height' => 634,
+          'upscale' => 0,
+        ),
+        'weight' => 0
+      )
+    )
+  );
+
+  return $styles;
+}
+
+function hoffman_core_get_data($request) {
+  switch($request) {
+    case 'event':
+      hoffman_core_json_node('event');
+      break;
+    case 'events':
+      hoffman_core_json_search('events');
+      break;
+    case 'project':
+      hoffman_core_json_node('project');
+      break;
+    case 'projects':
+      hoffman_core_json_search('projects');
+      break;
+    case 'series':
+      hoffman_core_json_node('series');
+      break;
+    case 'page':
+      hoffman_core_json_node('page');
+      break;
+    case 'news':
+      hoffman_core_json_node('news');
+      break;
+  }
+}
+
+// function hoffman_core_json_search($request) {
+
+// }
+//wrapper function for returning json of a node.
+function hoffman_core_json_node($expected_type) {
+  if(!isset($_GET['nid'])) {
+    drupal_json_output(array(
+      'error' => "You did not provide an nid"
+    ));
+  } else {
+    $nid = $_GET['nid'];
+    $wrapper = entity_metadata_wrapper('node',$nid);
+    $actual_type = $wrapper->type->value();
+
+    if($actual_type != $expected_type) {
+      $message = "Expected nid for type " . $expected_type;
+      $message .= ", but found type " . $actual_type . ".";
+       // header('Content-type: application/javascript; charset=utf-8');
+       drupal_json_output(array(
+      'error' => $message
+      ));
+    } else {
+      switch($expected_type) {
+        case 'event':
+          hoffman_core_return_event_json($wrapper);
+          break;
+        case 'project':
+          hoffman_core_return_project_json($wrapper);
+          break;
+        case 'series':
+          hoffman_core_return_series_json($wrapper);
+          break;
+        case 'page':
+          hoffman_core_return_page_json($wrapper);
+          break;
+        case 'news':
+          hoffman_core_return_news_json($wrapper);
+          break;
+      }
+    }
+  }
+}
+
+function hoffman_core_return_event_json($wrapper) {
+  $return_obj = array();
+  $dates = $wrapper->field_dates->value();
+  $image = $wrapper->field_page_image->value();
+  $return_obj['dates'] = hoffman_core_process_dates($dates);
+  $return_obj['name'] = $wrapper->title->value();
+  $return_obj['url'] = $wrapper->url->value();
+  $body = $wrapper->body->value();
+  $return_obj['teaser'] = $body['safe_summary'];
+  $return_obj['body'] = $body['safe_value'];
+  $return_obj['images'] = hoffman_core_process_images(array($image));
+  drupal_json_output($return_obj);
+}
+
+/**
+ *A function to process arrays of dates into strings.
+ * @param array of dates from an EMW
+ * @return formatted array of datetimes for start and end
+ */
+function hoffman_core_process_dates($dates) {
+  $return_obj = array();
+  foreach ($dates as $key => $date) {
+    $start = format_date(strtotime($date['value']),'pretty_print');
+    $end = format_date(strtotime($date['value2']), 'pretty_print');
+    $return_obj[$key]['start'] = $start;
+    $return_obj[$key]['end'] = $end;
+  };
+  return $return_obj;
+}
+
+/**
+ * A function to process arrays of images into their useful components.
+ * @param an array of images from an EMW
+ * @return formatted array of images with url, caption, etc.
+ */
+function hoffman_core_process_images($images) {
+  $process_image = function ($image) {
+    $lang = $image->language;
+    $body = $image->body[$lang][0]['safe_value'];
+    $uri = $image->field_image[$lang][0]['uri'];
+    $thumb = image_style_url('hoffman_core_thumb', $uri);
+    $full = image_style_url('hoffman_core_full', $uri);
+    $name = $image->title;
+    $result = array(
+      'desc' => $body,
+      'name' => $name,
+      'full' => $full,
+      'thumb' => $thumb
+    );
+    return $result;
+  };
+  $return_obj = array(); 
+  if(is_array($images)) {
+    foreach($images as $key => $image) {
+      $return_obj[$key] = $process_image($image);
+    }
+  } else {
+    $return_obj[0] = $process_image($images);
+  }
+  return $return_obj;
+}
+
+/**
+ * @param An entity metadata wrapper of othe object
+ */
+function hoffman_core_return_project_json($wrapper) {
+
+}
+function hoffman_core_return_series_json($wrapper) {
+
+}
+function hoffman_core_return_page_json($wrapper) {
+
+}
+function hoffman_core_return_news_json($wrapper) {
+
+}
+// function hoffman_set_data($request) {
+
+// }
