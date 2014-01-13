@@ -21,16 +21,19 @@ Drupal.behaviors.my_custom_behavior = {
 
   }
 };
+// a function to set the background position on the homepage. 
+//Only intended to be called on the front page.
 function setBackgroundPos() {
 	var sampleLi = $("#block-system-main-menu .menu li.first");
 	var backgroundPos = sampleLi.offset().left + sampleLi.width();
 	$("body").css({"background-position-x":backgroundPos + "px"});
 }
-$(function() {
-	setBackgroundPos();
-});//document.ready
-
-$(window).resize(setBackgroundPos);
+if($("body").hasClass('front')) {
+	$(function() {
+		setBackgroundPos();
+	});//document.ready
+	$(window).resize(setBackgroundPos);	
+}
 
 
 })(jQuery, Drupal, this, this.document);

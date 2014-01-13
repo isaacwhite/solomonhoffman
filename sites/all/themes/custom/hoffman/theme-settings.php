@@ -19,6 +19,7 @@ function hoffman_form_system_theme_settings_alter(&$form, &$form_state, $form_id
     '#description' => t("Settings for adjusting the appearance of the homepage")
   );
   $bg_path = theme_get_setting('background_path');
+  $bg_credit = theme_get_setting('background_credit');
   // If $bg_path is a public:// URI, display the path relative to the files
   // directory; stream wrappers are not end-user friendly.
   if (file_uri_scheme($bg_path) == 'public') {
@@ -28,6 +29,11 @@ function hoffman_form_system_theme_settings_alter(&$form, &$form_state, $form_id
     '#type' => 'textfield',
     '#title' => t('Path to background image'),
     '#default_value' =>  $bg_path,
+  );
+  $form['homepage']['settings']['bg_image']['background_credit'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Credit for the background photo'),
+    '#default_value' =>  $bg_credit,
   );
   $form['homepage']['settings']['bg_image']['bg_upload'] = array(
     '#type' => 'file',
@@ -60,5 +66,9 @@ function hoffman_settings_submit($form, &$form_state) {
      if (file_copy($file, $destination, FILE_EXISTS_REPLACE)) {
         $_POST['background_path'] = $form_state['values']['background_path'] = $destination;
      }
+  } else {
+    $destination = 'public://' . $form_state['values']['background_path'];
+    $_POST['background_path'] = $form_state['values']['background_path'] = $destination;
   }
+  $_POST['background_credit'] = $form_state['values']['background_credit'];
 }

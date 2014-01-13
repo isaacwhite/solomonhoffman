@@ -10,6 +10,7 @@
 
 <?php
 /*ADD THE BACKGROUND IMAGE FOR THE THEME*/
+  // dpm(theme_get_setting('background_credit'));
 if($is_front):
 ?>
 <style>
