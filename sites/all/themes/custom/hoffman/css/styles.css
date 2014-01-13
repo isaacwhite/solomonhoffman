@@ -1784,65 +1784,82 @@ tr.selected td {
   }
 }
 /* SMACSS theme rules */
-/* line 34, ../sass/_hoffman.scss */
-html {
-  background-color: #1c1c1c;
-  color: #f0f0f0;
-  min-height: 100%;
+/* line 38, ../sass/_hoffman.scss */
+* {
+  box-sizing: border-box;
 }
 
-/* line 40, ../sass/_hoffman.scss */
-body {
+/* line 41, ../sass/_hoffman.scss */
+html {
+  font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #1c1c1c;
+  color: #f0f0f0;
   height: 100%;
 }
 
-/* line 44, ../sass/_hoffman.scss */
+/* line 48, ../sass/_hoffman.scss */
+body {
+  min-height: 100%;
+  background-position: top;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* line 55, ../sass/_hoffman.scss */
+html body.admin-menu {
+  margin-top: 0 !important;
+  padding-top: 29px !important;
+}
+
+/* line 60, ../sass/_hoffman.scss */
 a {
   color: silver;
   text-decoration: none;
 }
 
-/* line 49, ../sass/_hoffman.scss */
+/* line 65, ../sass/_hoffman.scss */
 .region-sidebar-first {
   text-transform: lowercase;
   font-size: 1.25rem;
   line-height: 2;
 }
-/* line 54, ../sass/_hoffman.scss */
+/* line 70, ../sass/_hoffman.scss */
 .region-sidebar-first ul {
   padding-left: 0;
   text-align: center;
 }
-/* line 58, ../sass/_hoffman.scss */
+/* line 74, ../sass/_hoffman.scss */
 .region-sidebar-first ul a {
   transition: all .5s;
   display: block;
   background-color: #2e4994;
 }
-/* line 62, ../sass/_hoffman.scss */
+/* line 78, ../sass/_hoffman.scss */
 .region-sidebar-first ul a:hover {
   color: #456dde;
   background-color: #f0f0f0;
 }
-/* line 67, ../sass/_hoffman.scss */
+/* line 83, ../sass/_hoffman.scss */
 .region-sidebar-first ul li {
   display: block;
   max-width: 60%;
   margin: 0 auto 2rem;
 }
 
-/* line 75, ../sass/_hoffman.scss */
+/* line 91, ../sass/_hoffman.scss */
 #main {
   padding-top: 0;
   position: relative;
   height: 100%;
 }
 
-/* line 82, ../sass/_hoffman.scss */
+/* line 98, ../sass/_hoffman.scss */
 .front .sidebars {
   padding-top: 4rem;
 }
-/* line 85, ../sass/_hoffman.scss */
+/* line 101, ../sass/_hoffman.scss */
 .front .branding {
   margin-top: 3rem;
   width: 28%;
@@ -1850,18 +1867,19 @@ a {
   text-transform: uppercase;
   font-size: 1.75rem;
   line-height: 1.3;
-  font-family: Georgia, "Times New Roman", "DejaVu Serif", serif;
+  font-family: 'Mercury SSm A', 'Mercury SSm B', georgia, serif;
+  font-weight: 300;
+  font-style: normal;
   letter-spacing: 0.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #f0f0f0;
   margin: 0 1%;
-  font-weight: normal;
 }
-/* line 99, ../sass/_hoffman.scss */
+/* line 115, ../sass/_hoffman.scss */
 .front .region-sidebar-first {
   width: 30%;
 }
-/* line 102, ../sass/_hoffman.scss */
+/* line 118, ../sass/_hoffman.scss */
 .front #content {
   width: 70%;
   margin-left: 30%;

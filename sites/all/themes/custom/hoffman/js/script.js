@@ -21,6 +21,16 @@ Drupal.behaviors.my_custom_behavior = {
 
   }
 };
+function setBackgroundPos() {
+	var sampleLi = $("#block-system-main-menu .menu li.first");
+	var backgroundPos = sampleLi.offset().left + sampleLi.width();
+	$("body").css({"background-position-x":backgroundPos + "px"});
+}
+$(function() {
+	setBackgroundPos();
+});//document.ready
+
+$(window).resize(setBackgroundPos);
 
 
 })(jQuery, Drupal, this, this.document);

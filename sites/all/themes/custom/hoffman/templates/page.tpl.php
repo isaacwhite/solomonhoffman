@@ -8,6 +8,16 @@
  */
 ?>
 
+<?php
+/*ADD THE BACKGROUND IMAGE FOR THE THEME*/
+if($is_front):
+?>
+<style>
+body {
+  background-image: url("<?php print file_create_url(theme_get_setting('background_path')); ?>");
+}
+</style>
+<?php endif; ?>
 <div id="page">
 
   <header class="header" id="header" role="banner">

@@ -143,7 +143,14 @@ function hoffman_core_json_node($expected_type) {
   }
 }
 
+/**
+ * A wrapper function to return json for event nodes
+ * @param an entity_metadata_wrapper for the event
+ */
 function hoffman_core_return_event_json($wrapper) {
+  // dpm($wrapper->getPropertyInfo());
+  // dpm($wrapper->field_geocode->value());
+  // dpm($wrapper->field_event_location->value());
   $return_obj = array();
   $dates = $wrapper->field_dates->value();
   $image = $wrapper->field_page_image->value();
@@ -153,8 +160,55 @@ function hoffman_core_return_event_json($wrapper) {
   $body = $wrapper->body->value();
   $return_obj['teaser'] = $body['safe_summary'];
   $return_obj['body'] = $body['safe_value'];
-  $return_obj['images'] = hoffman_core_process_images(array($image));
+
+  $return_obj['images'] = hoffman_core_process_images($image);
+  $return_obj['locations'] = hoffman_core_process_locations($wrapper);
   drupal_json_output($return_obj);
+}
+
+/**
+ * A function to process locations
+ * @param an entity metadata wrapper for the object
+ * Intended for US locations only.
+ * */
+function hoffman_core_process_locations($wrapper) {
+  if($wrapper->field_event_location->value()) {
+    $raw_locations = $wrapper->field_event_location->value();
+    // dpm($raw_locations);
+    $geocodes = $wrapper->field_geocode->value();
+    $return_obj = array();
+    foreach($raw_locations as $key=>$location) {
+      $street_address = $location['thoroughfare'];
+      if($location['premise']) {
+        $more_address = $location['premise'];
+      }
+      $locality_string = "";
+      $locality_string .= $location['locality'];
+      if($location['administrative_area']) {
+        $locality_string .= ", " . $location['administrative_area'];
+        if($location['postal_code']) {
+          $locality_string .= " " . $location['postal_code'];
+        }
+      }
+      $name = $location['name_line'];
+      if($geocodes[$key]) {
+        $geocode = $geocodes[$key];
+      } else {
+        $geocode = NULL;
+      }
+
+      $this_location = array(
+        'name' => $name,
+        'address' => $street_address,
+        'locality' => $locality_string,
+        'geocode' => $geocode,
+        'address_more' => $more_address
+      );
+      $return_obj[$key] = $this_location;
+    }
+    return $return_obj;
+  } 
+
 }
 
 /**
@@ -195,12 +249,19 @@ function hoffman_core_process_images($images) {
     return $result;
   };
   $return_obj = array(); 
-  if(is_array($images)) {
-    foreach($images as $key => $image) {
-      $return_obj[$key] = $process_image($image);
+  // if($images) {
+  //   drupal_json_output("yes");
+  // } else {
+  //   drupal_json_output("no");
+  // }
+  if(!empty($images)) {
+    if($images)if(is_array($images)) {
+      foreach($images as $key => $image) {
+        $return_obj[$key] = $process_image($image);
+      }
+    } else {
+      $return_obj[0] = $process_image($images);
     }
-  } else {
-    $return_obj[0] = $process_image($images);
   }
   return $return_obj;
 }
