@@ -362,7 +362,7 @@ function expire_get_menu_structure($menu, $found, $needle, $first, &$found_globa
   // Clean up
   if (isset($structure)) {
     if (is_array($structure)) {
-      $structure = array_unique($structure);
+      $structure = array_unique($structure, SORT_REGULAR);
     }
   }
   else {

@@ -1,0 +1,13 @@
+diff --git a/expire.module b/expire.module
+index 6633729..6bed640 100644
+--- a/expire.module
++++ b/expire.module
+@@ -362,7 +362,7 @@ function expire_get_menu_structure($menu, $found, $needle, $first, &$found_globa
+   // Clean up
+   if (isset($structure)) {
+     if (is_array($structure)) {
+-      $structure = array_unique($structure);
++      $structure = array_unique($structure, SORT_REGULAR);
+     }
+   }
+   else {
