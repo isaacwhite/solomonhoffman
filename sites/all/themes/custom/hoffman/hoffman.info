@@ -67,6 +67,10 @@ stylesheets[all][] = css/styles.css
 ; Optionally add some JavaScripts to your theme.
 
 scripts[] = js/vendor/jquery-1.10.2.min.js
+scripts[] = js/vendor/flexslider/jquery.flexslider-min.js
+;scripts[] = js/vendor/jquery.once.min.js
+;scripts[] = js/vendor/underscore-min.js
+;scripts[] = js/vendor/backbone-min.js
 scripts[] = js/script.js
 
 

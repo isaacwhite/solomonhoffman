@@ -35,6 +35,29 @@ function addressfield_views_api() {
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ *
+ * Moves the hook_token_info_alter() implementation to the bottom so it is
+ * invoked after all modules implementing the same hook.
+ */
+function addressfield_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'token_info_alter') {
+    $group = $implementations['addressfield'];
+    unset($implementations['addressfield']);
+    $implementations['addressfield'] = $group;
+  }
+}
+
+/**
+ * Returns TRUE if a field map array value represents an addressfield.
+ *
+ * Provided for use as a callback by array_filter().
+ */
+function addressfield_field_map_filter($field) {
+  return !empty($field['type']) && $field['type'] == 'addressfield';
+}
+
+/**
  * Get the list of format plugins.
  */
 function addressfield_format_plugins() {
@@ -133,15 +156,7 @@ function addressfield_generate($address, array $handlers, array $context = array
   if ($context['mode'] == 'form') {
     $format['#addressfield'] = TRUE;
     $format['#process'][] = 'addressfield_process_format_form';
-    if (isset($context['instance'])) {
-      $format['#required'] = $context['instance']['required'];
-      $format['#non_empty_fields'] = $context['instance']['settings']['non_empty_fields'];
-      $format['#non_empty_fields_op'] = $context['instance']['settings']['non_empty_fields_op'];
-    } else {
-      $format['#required'] = FALSE;
-      $format['#non_empty_fields'] = array('country' => 'country');
-      $format['#non_empty_fields_op'] = 'or';
-    }
+    $format['#required'] = FALSE;
   }
   elseif ($context['mode'] == 'render') {
     $format['#pre_render'][] = 'addressfield_render_address';
@@ -160,28 +175,7 @@ function addressfield_process_format_form($format, &$form_state, $complete_form)
     ctools_plugin_load_function('addressfield', 'format', $handler, 'format callback');
   }
 
-  $required = array(
-    'general' => !empty($format['#required']),
-    'non_empty_fields' => $format['#non_empty_fields'],
-    'non_empty_fields_op' => $format['#non_empty_fields_op'],
-  );
-
-  _addressfield_process_format_form($format, $format['#address'], $required);
-
-  if ($required['general']) {
-    $message = t('This field is required.');
-  }
-  else {
-    $message = t('This field is not required.');
-  }
-
-  if ($required['non_empty_fields_op'] == 'or') {
-    $format['#description'] = $message . ' ' . t('However, for the address to be considered populated, one or more fields marked with an asterisk must be populated.');
-  }
-  else {
-    $format['#description'] = $message . ' ' . t('However, for the address to be considered populated, all fields marked with an asterisk must be populated.');
-  }
-
+  _addressfield_process_format_form($format, $format['#address'], $format['#required']);
   return $format;
 }
 
@@ -189,34 +183,38 @@ function _addressfield_process_format_form(&$format, $address, $required) {
   foreach (element_children($format) as $key) {
     $child = &$format[$key];
 
-    // Automatically expand elements that matches one of the field of the
-    // address structure.
+    // Automatically convert any element in the format array to an appropriate
+    // form element that matches one of the address component names.
     if (in_array($key, array('name_line', 'first_name', 'last_name', 'organisation_name', 'country', 'administrative_area', 'sub_administrative_area', 'locality', 'dependent_locality', 'postal_code', 'thoroughfare', 'premise', 'sub_premise'))) {
-      // Set the type.
+      // Set the form element type for the address component to whatever the
+      // address format specified in its #widget_type property.
       if (isset($child['#widget_type'])) {
         $child['#type'] = $child['#widget_type'];
       }
       else {
+        // If the element didn't specify a #widget_type and has options, turn it
+        // into a select list and unset its #size value, which is typically used
+        // to provide the width of a textfield.
         if (isset($child['#options'])) {
           $child['#type'] = 'select';
-          $child['#size'] = 0;
+          unset($child['#size']);
         }
         else {
+          // Otherwise go ahead and make it a textfield.
           $child['#type'] = 'textfield';
         }
       }
 
-      if (!empty($required['non_empty_fields'][$key])) {
-        $child['#required'] = TRUE;
-      }
-      else {
+      if (!$required) {
         unset($child['#required']);
       }
 
-      $child['#default_value'] = $address[$key];
+      if (isset($address[$key])) {
+        $child['#default_value'] = $address[$key];
+      }
     }
 
-    // Recurse through the child.
+    // Recurse through the element's children if it has any.
     _addressfield_process_format_form($child, $address, $required);
   }
 }
@@ -233,8 +231,8 @@ function _addressfield_render_address(&$format, $address) {
   foreach (element_children($format) as $key) {
     $child = &$format[$key];
 
-    // Automatically expand elements that matches one of the field of the
-    // address structure.
+    // Automatically expand elements that match one of the fields of the address
+    // structure.
     if (in_array($key, array('name_line', 'first_name', 'last_name', 'organisation_name', 'country', 'administrative_area', 'sub_administrative_area', 'locality', 'dependent_locality', 'postal_code', 'thoroughfare', 'premise', 'sub_premise'), TRUE)) {
       if (isset($child['#render_type'])) {
         $child['#type'] = $child['#render_type'];
@@ -249,10 +247,12 @@ function _addressfield_render_address(&$format, $address) {
       // If the element instructs us to render the option value instead of the
       // raw address element value and its #options array has a matching key,
       // swap it out for the option value now.
+      $child['#children'] = '';
+
       if (!empty($child['#render_option_value']) && isset($child['#options'][$address[$key]])) {
         $child['#children'] = check_plain($child['#options'][$address[$key]]);
       }
-      else {
+      elseif (isset($address[$key])) {
         $child['#children'] = check_plain($address[$key]);
       }
 
@@ -311,13 +311,6 @@ function theme_addressfield_container($variables) {
  * Implementation of hook_element_info().
  */
 function addressfield_element_info() {
-  $types['addressfield'] = array(
-    '#theme_wrappers' => array('fieldset'),
-    '#element_validate' => array('addressfield_element_addressfield_validate'),
-    '#tag' => 'div',
-    '#non_empty_fields' => array('country' => 'country'),
-    '#non_empty_fields_op' => 'or',
-  );
   $types['addressfield_container'] = array(
     '#theme_wrappers' => array('addressfield_container'),
     '#process' => array('addressfield_widget_process'),
@@ -349,10 +342,7 @@ function addressfield_field_info() {
     'label' => t('Postal address'),
     'description' => t('A field type used for storing postal addresses according the xNAL standard.'),
     'settings' => array(),
-    'instance_settings' => array(
-      'non_empty_fields' => array('country' => 'country'),
-      'non_empty_fields_op' => 'or',
-    ),
+    'instance_settings' => array(),
     'default_widget' => 'addressfield_standard',
     'default_formatter' => 'addressfield_default',
     'property_type' => 'addressfield',
@@ -361,205 +351,6 @@ function addressfield_field_info() {
 
   return $fields;
 }
-
- /**
- * Form API validation function for validating an addressfield element.
- */
-function addressfield_element_addressfield_validate($element, &$form_state, $form) {
-  // If we are processing the field settings default values form.
-  if (!isset($form['#entity']) && isset($element['#entity_type'])) {
-    // Reset the element_key so that the default values will be saved.
-    $form_state['values'][$element['#field_name']][$element['#language']][$element['#delta']]['element_key'] = '';
-  }
-
-  // Keep a pointer to the original $element.
-  $addressfield = &$element;
-
-  // Build an array of references to individual address elements.
-  $children = array(); // Array to hold references to child elements.
-  $stack = array(&$element); // Stack of elements being processed.
-  $ekey = key($stack); // Current element key.
-
-  while (isset($element)) {
-    // If the element has child elements to process.
-    if ($ckey = key($element)) {
-      // If current is a child element.
-      if (element_child($ckey)) {
-        // If the child is an individual address element.
-        if (in_array($ckey, array('name_line', 'first_name', 'last_name', 'organisation_name', 'country', 'administrative_area', 'sub_administrative_area', 'locality', 'dependent_locality', 'postal_code', 'thoroughfare', 'premise', 'sub_premise'))) {
-          // Add the child to the array of children references.
-          $children[$ckey] = &$element[$ckey];
-        }
-
-        // Move to the next child.
-        next($element);
-
-        // If the child has children to process.
-        if (element_children($element[$ckey])) {
-          // Add the child onto the stack for processing its children.
-          $stack[$ckey] = &$element[$ckey];
-          // Move pointer of the stack to the next element.
-          next($stack);
-
-          // Make the child the current element.
-          $element = &$element[$ckey];
-          reset($element);
-          $ekey = $ckey;
-        }
-      }
-      else {
-        // Move to the next child.
-        next($element);
-      }
-    }
-    else {
-      // Remove the current element from the stack.
-      array_pop($stack);
-      // Make sure the pointer is always at the end of the stack
-      end($stack);
-
-      // If there are still elements on the stack.
-      if (!empty($stack)) {
-        // Move processing to the next element on the stack.
-        $ekey = key($stack);
-        $element = &$stack[$ekey];
-      }
-      else {
-        unset($element);
-      }
-    }
-  }
-
-  // Reset element to its original value.
-  $element = &$addressfield;
-
-  // Determine that the field is valid and default or not
-  $valid = $element['#non_empty_fields_op'] == 'or' ? FALSE : TRUE;
-  $default = TRUE;
-  if (isset($element['#entity_type'])) {
-    $instance = field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle']);
-    foreach ($children as $name => $field) {
-      // Flag if the element is not in a default state.
-      if (!empty($field['#value']) && $field['#value'] != $instance['default_value'][0][$name]) {
-        $default = FALSE;
-        break;
-      }
-    }
-  }
-
-  foreach ($children as $name => $field) {
-    // Determine if non empty field requirements have been met.
-    if ($field['#required']) {
-      if ($element['#non_empty_fields_op'] == 'or' && !empty($field['#value'])) {
-        $valid = TRUE;
-        break;
-      }
-      elseif ($element['#non_empty_fields_op'] == 'and' && empty($field['#value'])) {
-        $valid = FALSE;
-        break;
-      }
-    }
-  }
-
-  if ($valid) {
-    // The field is valid, remove all errors related to the field
-    // @see: https://api.drupal.org/comment/28464#comment-28464
-    if ($errors = form_get_errors()) {
-      $ekey = $element['#field_name'] . '][' . $element['#language'] . '][' . $element['#delta'];
-      // Clear errors.
-      form_clear_error();
-      $error_messages = drupal_get_messages('error');
-      // Initialize an array where removed messages are stored.
-      $removed_messages = array();
-
-      // Remove all errors originated by the element.
-      foreach ($errors as $name => $error_message) {
-        if (strpos($name, $ekey) !== FALSE) {
-          $removed_messages[$name] = $error_message;
-          unset($errors[$name]);
-        }
-      }
-
-      // Reinstate remaining errors.
-      foreach ($errors as $name => $error) {
-        form_set_error($name, $error);
-        // form_set_error() calls drupal_set_message(), so we ahve to filter out
-        // these from the error messages as well.
-        $removed_messages[] = $error;
-      }
-
-      // Reinstate remaining error messages (which, at this point, are messages
-      // that were originated outside of the validation process).
-      foreach (array_diff($error_messages['error'], $removed_messages) as $message) {
-        drupal_set_message($message, 'error');
-      }
-    }
-  }
-
-  if ($element['#required']) {
-    if (!$valid) {
-      if ($element['#non_empty_fields_op'] == 'or') {
-        // Use drupal_set_message instead of form_error,
-        // this is not entire field's error
-        drupal_set_message(t('%title is Required. For the address to be considered populated, one or more fields marked with an asterisk must be populated.', array('%title' => $element['#title'])), 'error');
-      }
-      else {
-        // Use drupal_set_message instead of form_error,
-        // this is not entire field's error
-        drupal_set_message(t('%title is Required. For the address to be considered populated, all fields marked with an asterisk must be populated.', array('%title' => $element['#title'])), 'error');
-      }
-    }
-  }
-  else {
-    if (!$valid && !$default) {
-      if ($element['#non_empty_fields_op'] == 'or') {
-        // Use drupal_set_message instead of form_error,
-        // this is not entire field's error
-        drupal_set_message(t('It appears you have attempted to populate the %title field. For the address to be considered populated, one or more fields marked with an asterisk must be populated. Empty all fields to clear this error.', array('%title' => $element['#title'])), 'error', FALSE);
-      }
-      else {
-        // Use drupal_set_message instead of form_error,
-        // this is not entire field's error
-        drupal_set_message(t('It appears you have attempted to populate the %title field. For the address to be considered populated, all fields marked with an asterisk must be populated. Empty all fields to clear this error.', array('%title' => $element['#title'])), 'error', FALSE);
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_field_instance_settings_form().
- */
-function addressfield_field_instance_settings_form($field, $instance) {
-  $form = array();
-  $options = array();
-
-  foreach($field['columns'] as $name => $info) {
-    $options[$name] = $info['description'];
-  }
-
-  $form['non_empty_fields'] = array(
-    '#title' => t('Required fields for non-empty address'),
-    '#description' => t('Select which fields are required for the address to be considered populated (see the operator field below for specifying whether all selected fields are required, or one or more of the selected fields are required).'),
-    '#options' => $options,
-    '#type' => 'checkboxes',
-    '#default_value' => !empty($instance['settings']['non_empty_fields']) ? $instance['settings']['non_empty_fields'] : array('country' => 'country'),
-    '#required' => TRUE,
-    '#weight' => -2,
-  );
-
-  $form['non_empty_fields_op'] = array(
-    '#title' => t('Operator'),
-    '#description' => t('Determines whether all selected fields are required, or one or more of the selected fields are required.'),
-    '#options' => array('and' => t('All fields are required'), 'or' => t('Only one field is required')),
-    '#type' => 'radios',
-    '#default_value' => !empty($instance['settings']['non_empty_fields_op']) ? $instance['settings']['non_empty_fields_op'] : 'or',
-    '#required' => TRUE,
-    '#weight' => -1,
-  );
-
-  return $form;
-}
-
 
 /**
  * Returns an array of default values for the addressfield form elements.
@@ -600,33 +391,38 @@ function addressfield_default_values($available_countries = NULL) {
  * Implements hook_field_is_empty().
  */
 function addressfield_field_is_empty($item, $field) {
-  $empty = TRUE;
+  // Every address field must have at least a country value or it is considered
+  // empty, even if it has name information.
+  return empty($item['country']);
+}
 
-  if (!empty($item['element_key'])) {
-    list($entity_type, $bundle_name, $field_name) = explode('|', $item['element_key']);
-    $instance = field_info_instance($entity_type, $field_name, $bundle_name);
+/**
+ * Implements hook_field_presave().
+ */
+function addressfield_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  foreach ($items as $delta => &$item) {
+    // If the first name and last name are set but the name line isn't...
+    if (isset($item['first_name']) && isset($item['last_name']) && !isset($item['name_line'])) {
+      // Combine the first and last name to be the name line.
+      $items[$delta]['name_line'] = $items[$delta]['first_name'] . ' ' . $items[$delta]['last_name'];
+    }
+    elseif (isset($item['name_line'])) {
+      // Otherwise if the name line is set, separate it out into a best guess at
+      // the first and last name.
+      $names = explode(' ', $item['name_line']);
 
-    if (isset($instance['default_value'][0])) {
-      foreach ($instance['default_value'][0] as $key => $value) {
-        // If the key is an address element.
-        if (in_array($key, array('name_line', 'first_name', 'last_name', 'organisation_name', 'country', 'administrative_area', 'sub_administrative_area', 'locality', 'dependent_locality', 'postal_code', 'thoroughfare', 'premise', 'sub_premise'))) {
-          // If the value is set and it's not equal to the default value.
-          if (isset($item[$key]) && $item[$key] != $value) {
-            $empty = FALSE;
-            break;
-          }
-        }
+      $item['first_name'] = array_shift($names);
+      $item['last_name'] = implode(' ', $names);
+    }
+
+    // Trim whitespace from all of the address components and convert any double
+    // spaces to single spaces.
+    foreach ($item as $key => &$value) {
+      if (!in_array($key, array('element_key', 'data')) && is_string($value)) {
+        $value = trim(str_replace('  ', ' ', $value));
       }
     }
-    else {
-      $empty = empty($item['country']);
-    }
   }
-  else {
-    $empty = empty($item['country']);
-  }
-
-  return $empty;
 }
 
 /**
@@ -730,7 +526,7 @@ function addressfield_field_widget_form(&$form, &$form_state, $field, $instance,
     // Wrap everything in a fieldset. This is not the best looking element,
     // but it's the only wrapper available in Drupal we can properly use
     // in that context, and it is overridable if necessary.
-    $element['#type'] = 'addressfield';
+    $element['#type'] = 'fieldset';
 
     // Generate the address form.
     $context = array(
@@ -744,13 +540,6 @@ function addressfield_field_widget_form(&$form, &$form_state, $field, $instance,
 
     // Mark the form element as required if necessary.
     $element['#required'] = $delta == 0 && $instance['required'];
-    $element['#non_empty_fields'] = $instance['settings']['non_empty_fields'];
-    $element['#non_empty_fields_op'] = $instance['settings']['non_empty_fields_op'];
-    $element['#element_validate'] = array('addressfield_element_addressfield_validate');
-  }
-
-  if ($field['cardinality'] != 1 && $delta > 0) {
-    $element['#title'] = $instance['label'] . ' (' . ($delta + 1) . ')';
   }
 
   return $element;

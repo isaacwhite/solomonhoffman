@@ -1784,12 +1784,12 @@ tr.selected td {
   }
 }
 /* SMACSS theme rules */
-/* line 38, ../sass/_hoffman.scss */
+/* line 39, ../sass/_hoffman.scss */
 * {
   box-sizing: border-box;
 }
 
-/* line 41, ../sass/_hoffman.scss */
+/* line 42, ../sass/_hoffman.scss */
 html {
   font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
   font-weight: 400;
@@ -1799,56 +1799,57 @@ html {
   height: 100%;
 }
 
-/* line 48, ../sass/_hoffman.scss */
+/* line 49, ../sass/_hoffman.scss */
 body {
   min-height: 100%;
   background-position: top;
   background-size: contain;
   background-repeat: no-repeat;
+  position: relative;
 }
 
-/* line 55, ../sass/_hoffman.scss */
+/* line 57, ../sass/_hoffman.scss */
 html body.admin-menu {
   margin-top: 0 !important;
   padding-top: 29px !important;
 }
 
-/* line 60, ../sass/_hoffman.scss */
+/* line 62, ../sass/_hoffman.scss */
 a {
   color: silver;
   text-decoration: none;
 }
 
-/* line 65, ../sass/_hoffman.scss */
+/* line 67, ../sass/_hoffman.scss */
 .region-sidebar-first {
   text-transform: lowercase;
   font-size: 1.25rem;
   line-height: 2;
 }
-/* line 70, ../sass/_hoffman.scss */
+/* line 72, ../sass/_hoffman.scss */
 .region-sidebar-first ul {
   padding-left: 0;
   text-align: center;
 }
-/* line 74, ../sass/_hoffman.scss */
+/* line 76, ../sass/_hoffman.scss */
 .region-sidebar-first ul a {
   transition: all .5s;
   display: block;
   background-color: #2e4994;
 }
-/* line 78, ../sass/_hoffman.scss */
+/* line 80, ../sass/_hoffman.scss */
 .region-sidebar-first ul a:hover {
   color: #456dde;
   background-color: #f0f0f0;
 }
-/* line 83, ../sass/_hoffman.scss */
+/* line 85, ../sass/_hoffman.scss */
 .region-sidebar-first ul li {
   display: block;
   max-width: 60%;
   margin: 0 auto 2rem;
 }
 
-/* line 91, ../sass/_hoffman.scss */
+/* line 92, ../sass/_hoffman.scss */
 #main {
   padding-top: 0;
   position: relative;
@@ -1883,6 +1884,38 @@ a {
 .front #content {
   width: 70%;
   margin-left: 30%;
+}
+
+/* line 126, ../sass/_hoffman.scss */
+.node-project .field-series-photos {
+  width: 60%;
+  float: right;
+  margin: 0 0 1rem 2rem;
+}
+
+/* line 132, ../sass/_hoffman.scss */
+.field-role {
+  overflow: hidden;
+}
+/* line 134, ../sass/_hoffman.scss */
+.field-role .field-item {
+  font-size: .875rem;
+  float: left;
+}
+/* line 137, ../sass/_hoffman.scss */
+.field-role .field-item a {
+  display: block;
+  padding: .5rem;
+  border: 1px solid silver;
+  border-radius: 2px;
+  margin: 1rem;
+  margin-left: 0;
+}
+/* line 144, ../sass/_hoffman.scss */
+.field-role .field-item a:hover {
+  border: 1px solid #1c1c1c;
+  background-color: #f0f0f0;
+  color: #1c1c1c;
 }
 
 /* @import "theme-A"; */

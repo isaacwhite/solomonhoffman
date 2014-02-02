@@ -233,36 +233,36 @@ function hoffman_core_process_dates($dates) {
  * @return formatted array of images with url, caption, etc.
  */
 function hoffman_core_process_images($images) {
-  $process_image = function ($image) {
-    $lang = $image->language;
-    $body = $image->body[$lang][0]['safe_value'];
-    $uri = $image->field_image[$lang][0]['uri'];
-    $thumb = image_style_url('hoffman_core_thumb', $uri);
-    $full = image_style_url('hoffman_core_full', $uri);
-    $name = $image->title;
-    $result = array(
-      'desc' => $body,
-      'name' => $name,
-      'full' => $full,
-      'thumb' => $thumb
-    );
-    return $result;
-  };
-  $return_obj = array(); 
-  // if($images) {
-  //   drupal_json_output("yes");
-  // } else {
-  //   drupal_json_output("no");
+  // $process_image = function ($image) {
+  //   $lang = $image->language;
+  //   $body = $image->body[$lang][0]['safe_value'];
+  //   $uri = $image->field_image[$lang][0]['uri'];
+  //   $thumb = image_style_url('hoffman_core_thumb', $uri);
+  //   $full = image_style_url('hoffman_core_full', $uri);
+  //   $name = $image->title;
+  //   $result = array(
+  //     'desc' => $body,
+  //     'name' => $name,
+  //     'full' => $full,
+  //     'thumb' => $thumb
+  //   );
+  //   return $result;
+  // };
+  // $return_obj = array(); 
+  // // if($images) {
+  // //   drupal_json_output("yes");
+  // // } else {
+  // //   drupal_json_output("no");
+  // // }
+  // if(!empty($images)) {
+  //   if($images)if(is_array($images)) {
+  //     foreach($images as $key => $image) {
+  //       $return_obj[$key] = $process_image($image);
+  //     }
+  //   } else {
+  //     $return_obj[0] = $process_image($images);
+  //   }
   // }
-  if(!empty($images)) {
-    if($images)if(is_array($images)) {
-      foreach($images as $key => $image) {
-        $return_obj[$key] = $process_image($image);
-      }
-    } else {
-      $return_obj[0] = $process_image($images);
-    }
-  }
   return $return_obj;
 }
 

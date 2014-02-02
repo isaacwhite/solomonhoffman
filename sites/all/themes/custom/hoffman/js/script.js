@@ -27,13 +27,14 @@ function setBackgroundPos() {
 	var sampleLi = $("#block-system-main-menu .menu li.first");
 	var backgroundPos = sampleLi.offset().left + sampleLi.width();
 	$("body").css({"background-position-x":backgroundPos + "px"});
-}
-if($("body").hasClass('front')) {
-	$(function() {
+};
+$(function() {
+	if($("body").hasClass('front')) {
 		setBackgroundPos();
-	});//document.ready
-	$(window).resize(setBackgroundPos);	
-}
+		$(window).resize(setBackgroundPos);	
+	}
+});//document.ready
+
 
 
 })(jQuery, Drupal, this, this.document);

@@ -1,0 +1,12 @@
+[01-Feb-2014 16:39:20] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:39:28] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:40:00] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:40:04] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:41:44] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:42:28] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:47:02] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 16:47:08] PHP Parse error:  syntax error, unexpected T_FUNCTION in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/custom/hoffman_core/hoffman_core.module on line 236
+[01-Feb-2014 17:00:28] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/contrib/edit/edit.install on line 121
+[01-Feb-2014 17:06:25] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/contrib/edit/edit.install on line 121
+[01-Feb-2014 17:07:01] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/contrib/edit/edit.install on line 121
+[01-Feb-2014 17:08:39] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home2/isaacwhi/public_html/hoffman_dev/sites/all/modules/contrib/edit/edit.install on line 121
