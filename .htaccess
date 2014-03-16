@@ -174,3 +174,10 @@ DirectoryIndex index.php index.html index.htm
     </FilesMatch>
   </IfModule>
 </IfModule>
+
+#Password settings
+#Handle password protection for dev.solomonhoffman.com
+AuthType Basic
+AuthName "restricted area"
+AuthUserFile /home/isaacwhi/www/hoffman_dev/.htpasswd
+require valid-user
