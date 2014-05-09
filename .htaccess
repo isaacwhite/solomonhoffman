@@ -11,9 +11,7 @@
 Options -Indexes
 
 # Follow symbolic links in this directory.
-# For security reasons, Option followsymlinks cannot be overridden.
-#Options +FollowSymLinks
-Options +SymLinksIfOwnerMatch
+Options +FollowSymLinks
 
 # Make Drupal handle any 404 errors.
 ErrorDocument 404 /index.php
@@ -106,38 +104,7 @@ DirectoryIndex index.php index.html index.htm
   # For example if your site is at http://example.com/drupal uncomment and
   # modify the following line:
   # RewriteBase /drupal
-  
-  ### BOOST START ###
-
-  # Allow for alt paths to be set via htaccess rules; allows for cached variants (future mobile support)
-  RewriteRule .* - [E=boostpath:normal]
-
-  # Caching for anonymous users
-  # Skip boost IF not get request OR uri has wrong dir OR cookie is set OR request came from this server OR https request
-  RewriteCond %{REQUEST_METHOD} !^(GET|HEAD)$ [OR]
-  RewriteCond %{REQUEST_URI} (^/(admin|cache|misc|modules|sites|system|openid|themes|node/add|comment/reply))|(/(edit|user|user/(login|password|register))$) [OR]
-  RewriteCond %{HTTPS} on [OR]
-  RewriteCond %{HTTP_COOKIE} DRUPAL_UID [OR]
-  RewriteCond %{ENV:REDIRECT_STATUS} 200
-  RewriteRule .* - [S=5]
-
-  # GZIP
-  RewriteCond %{HTTP:Accept-encoding} !gzip
-  RewriteRule .* - [S=2]
-  RewriteCond %{DOCUMENT_ROOT}/cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html -s
-  RewriteRule .* cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html [L,T=text/html,E=no-gzip:1]
-  RewriteCond %{DOCUMENT_ROOT}/cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json -s
-  RewriteRule .* cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json [L,T=text/javascript,E=no-gzip:1]
-
-  # NORMAL
-  RewriteCond %{DOCUMENT_ROOT}/cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html -s
-  RewriteRule .* cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html [L,T=text/html]
-  RewriteCond %{DOCUMENT_ROOT}/cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json -s
-  RewriteRule .* cache/%{ENV:boostpath}/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json [L,T=text/javascript]
-
-  ### BOOST END ###
-
-#
+  #
   # If your site is running in a VirtualDocumentRoot at http://example.com/,
   # uncomment the following line:
   # RewriteBase /
@@ -174,10 +141,3 @@ DirectoryIndex index.php index.html index.htm
     </FilesMatch>
   </IfModule>
 </IfModule>
-
-#Password settings
-#Handle password protection for dev.solomonhoffman.com
-AuthType Basic
-AuthName "restricted area"
-AuthUserFile /home/isaacwhi/www/hoffman_dev/.htpasswd
-require valid-user
