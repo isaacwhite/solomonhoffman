@@ -25,7 +25,7 @@
   <meta http-equiv="cleartype" content="on">
 
   <?php print $styles; ?>
-  <link rel="stylesheet" type="text/css" href="//cloud.typography.com/6164632/701142/css/fonts.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="//cloud.typography.com/6164632/701142/css/fonts.css" /> -->
   <?php print $scripts; ?>
   <?php if ($add_html5_shim and !$add_respond_js): ?>
     <!--[if lt IE 9]>

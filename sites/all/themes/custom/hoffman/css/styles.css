@@ -388,17 +388,17 @@ fieldset {
   margin: 0 2px;
   /* Apply borders and padding that keep the vertical rhythm. */
   border-color: #c0c0c0;
-  border-top-width: 0.0625em;
   border-top-style: solid;
+  border-top-width: 0.0625em;
   padding-top: 0.4625em;
-  border-bottom-width: 0.0625em;
   border-bottom-style: solid;
+  border-bottom-width: 0.0625em;
   padding-bottom: 0.9125em;
-  border-left-width: 0.0625em;
   border-left-style: solid;
+  border-left-width: 0.0625em;
   padding-left: 0.9125em;
-  border-right-width: 0.0625em;
   border-right-style: solid;
+  border-right-width: 0.0625em;
   padding-right: 0.9125em;
 }
 
@@ -1120,10 +1120,11 @@ table {
 /* line 265, ../sass/components/_misc.scss */
 .tabs-primary, .tabs-secondary {
   overflow: hidden;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(100%, #bbbbbb), color-stop(100%, transparent));
   background-image: -webkit-linear-gradient(bottom, #bbbbbb 1px, transparent 1px);
   background-image: -moz-linear-gradient(bottom, #bbbbbb 1px, transparent 1px);
   background-image: -o-linear-gradient(bottom, #bbbbbb 1px, transparent 1px);
-  background-image: linear-gradient(to top, #bbbbbb 1px, transparent 1px);
+  background-image: linear-gradient(bottom, #bbbbbb 1px, transparent 1px);
   /* IE 9 and earlier don't understand gradients. */
   list-style: none;
   border-bottom: 1px solid #bbbbbb \0/ie;
@@ -1133,7 +1134,7 @@ table {
 }
 
 /* line 275, ../sass/components/_misc.scss */
-.tabs-primary__tab, .tabs-secondary__tab,
+.tabs-primary__tab, .tabs-primary__tab.is-active, .tabs-secondary__tab,
 .tabs-secondary__tab.is-active {
   float: left;
   /* LTR */
@@ -1141,7 +1142,7 @@ table {
 }
 
 /* line 279, ../sass/components/_misc.scss */
-a.tabs-primary__tab-link, a.tabs-secondary__tab-link {
+a.tabs-primary__tab-link, a.tabs-primary__tab-link.is-active, a.tabs-secondary__tab-link, a.tabs-secondary__tab-link.is-active {
   border: 1px solid #e9e9e9;
   border-right: 0;
   border-bottom: 0;
@@ -1200,6 +1201,7 @@ a.tabs-primary__tab-link:hover, a.tabs-primary__tab-link:focus {
 a.tabs-primary__tab-link:active, a.tabs-primary__tab-link.is-active {
   background-color: transparent;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E9E9', endColorstr='#00E9E9E9');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e9e9), color-stop(100%, rgba(233, 233, 233, 0)));
   background-image: -webkit-linear-gradient(#e9e9e9, rgba(233, 233, 233, 0));
   background-image: -moz-linear-gradient(#e9e9e9, rgba(233, 233, 233, 0));
   background-image: -o-linear-gradient(#e9e9e9, rgba(233, 233, 233, 0));
@@ -1225,6 +1227,8 @@ a.tabs-primary__tab-link:active, a.tabs-primary__tab-link.is-active {
 a.tabs-secondary__tab-link, a.tabs-secondary__tab-link.is-active {
   -webkit-border-radius: 0.75em;
   -moz-border-radius: 0.75em;
+  -ms-border-radius: 0.75em;
+  -o-border-radius: 0.75em;
   border-radius: 0.75em;
   -webkit-transition: background-color 0.3s;
   -moz-transition: background-color 0.3s;
@@ -1689,12 +1693,14 @@ tr.selected td {
   margin: 0 0.2em;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
 }
 /* line 803, ../sass/components/_misc.scss */
 .progress .filled {
   background-color: #0072b9;
-  background-image: url('../images/progress.gif?1387987964');
+  background-image: url('../images/progress.gif?1395120608');
 }
 
 /**
@@ -1784,12 +1790,12 @@ tr.selected td {
   }
 }
 /* SMACSS theme rules */
-/* line 39, ../sass/_hoffman.scss */
+/* line 40, ../sass/_hoffman.scss */
 * {
   box-sizing: border-box;
 }
 
-/* line 42, ../sass/_hoffman.scss */
+/* line 43, ../sass/_hoffman.scss */
 html {
   font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
   font-weight: 400;
@@ -1797,9 +1803,10 @@ html {
   background-color: #1c1c1c;
   color: #f0f0f0;
   height: 100%;
+  line-height: 1.5em;
 }
 
-/* line 49, ../sass/_hoffman.scss */
+/* line 51, ../sass/_hoffman.scss */
 body {
   min-height: 100%;
   background-position: top;
@@ -1808,59 +1815,59 @@ body {
   position: relative;
 }
 
-/* line 57, ../sass/_hoffman.scss */
+/* line 59, ../sass/_hoffman.scss */
 html body.admin-menu {
   margin-top: 0 !important;
   padding-top: 29px !important;
 }
 
-/* line 62, ../sass/_hoffman.scss */
+/* line 64, ../sass/_hoffman.scss */
 a {
   color: silver;
   text-decoration: none;
 }
 
-/* line 67, ../sass/_hoffman.scss */
+/* line 69, ../sass/_hoffman.scss */
 .region-sidebar-first {
   text-transform: lowercase;
   font-size: 1.25rem;
   line-height: 2;
 }
-/* line 72, ../sass/_hoffman.scss */
+/* line 74, ../sass/_hoffman.scss */
 .region-sidebar-first ul {
   padding-left: 0;
   text-align: center;
 }
-/* line 76, ../sass/_hoffman.scss */
+/* line 78, ../sass/_hoffman.scss */
 .region-sidebar-first ul a {
   transition: all .5s;
   display: block;
   background-color: #2e4994;
 }
-/* line 80, ../sass/_hoffman.scss */
+/* line 82, ../sass/_hoffman.scss */
 .region-sidebar-first ul a:hover {
   color: #456dde;
   background-color: #f0f0f0;
 }
-/* line 85, ../sass/_hoffman.scss */
+/* line 87, ../sass/_hoffman.scss */
 .region-sidebar-first ul li {
   display: block;
   max-width: 60%;
   margin: 0 auto 2rem;
 }
 
-/* line 92, ../sass/_hoffman.scss */
+/* line 94, ../sass/_hoffman.scss */
 #main {
   padding-top: 0;
   position: relative;
   height: 100%;
 }
 
-/* line 98, ../sass/_hoffman.scss */
+/* line 100, ../sass/_hoffman.scss */
 .front .sidebars {
   padding-top: 4rem;
 }
-/* line 101, ../sass/_hoffman.scss */
+/* line 103, ../sass/_hoffman.scss */
 .front .branding {
   margin-top: 3rem;
   width: 28%;
@@ -1876,33 +1883,104 @@ a {
   border-bottom: 1px solid #f0f0f0;
   margin: 0 1%;
 }
-/* line 115, ../sass/_hoffman.scss */
+/* line 117, ../sass/_hoffman.scss */
 .front .region-sidebar-first {
   width: 30%;
 }
-/* line 118, ../sass/_hoffman.scss */
+/* line 120, ../sass/_hoffman.scss */
 .front #content {
   width: 70%;
   margin-left: 30%;
 }
 
-/* line 126, ../sass/_hoffman.scss */
+/* line 128, ../sass/_hoffman.scss */
 .node-project .field-series-photos {
   width: 60%;
   float: right;
   margin: 0 0 1rem 2rem;
+  position: relative;
+}
+/* line 134, ../sass/_hoffman.scss */
+.node-project .field-series-photos .flex-control-nav a {
+  background-color: #606060;
+}
+/* line 137, ../sass/_hoffman.scss */
+.node-project .field-series-photos .flex-control-nav a.flex-active {
+  background-color: #f0f0f0;
+}
+/* line 142, ../sass/_hoffman.scss */
+.node-project .field-series-photos .flex-direction-nav .flex-next {
+  right: -40px;
+}
+/* line 145, ../sass/_hoffman.scss */
+.node-project .field-series-photos .flex-direction-nav .flex-prev {
+  left: -40px;
+}
+/* line 148, ../sass/_hoffman.scss */
+.node-project .field-series-photos .flex-direction-nav a {
+  opacity: 0.5;
+  line-height: 1;
+  color: #606060;
+}
+/* line 153, ../sass/_hoffman.scss */
+.node-project .field-series-photos .flex-direction-nav a:hover {
+  opacity: 1;
 }
 
-/* line 132, ../sass/_hoffman.scss */
+/* line 161, ../sass/_hoffman.scss */
+.node-page > .field-body {
+  max-width: 40rem;
+  float: left;
+}
+/* line 166, ../sass/_hoffman.scss */
+.node-page .field-related-projects {
+  margin-top: 7.5em;
+  float: right;
+  width: 25%;
+  padding-left: 1rem;
+}
+/* line 172, ../sass/_hoffman.scss */
+.node-page .field-related-projects .field-label {
+  font-family: 'Mercury SSm A', 'Mercury SSm B', georgia, serif;
+  font-weight: 300;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: -0.0333em;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  border-bottom: 3px solid #2e4994;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* line 186, ../sass/_hoffman.scss */
+.field-page-image .field-image {
+  width: 75%;
+  float: left;
+}
+/* line 190, ../sass/_hoffman.scss */
+.field-page-image .field-body {
+  width: 25%;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  padding-left: 1rem;
+}
+/* line 196, ../sass/_hoffman.scss */
+.field-page-image .field-body p {
+  margin-bottom: 0;
+}
+
+/* line 202, ../sass/_hoffman.scss */
 .field-role {
   overflow: hidden;
 }
-/* line 134, ../sass/_hoffman.scss */
+/* line 204, ../sass/_hoffman.scss */
 .field-role .field-item {
   font-size: .875rem;
   float: left;
 }
-/* line 137, ../sass/_hoffman.scss */
+/* line 207, ../sass/_hoffman.scss */
 .field-role .field-item a {
   display: block;
   padding: .5rem;
@@ -1911,7 +1989,7 @@ a {
   margin: 1rem;
   margin-left: 0;
 }
-/* line 144, ../sass/_hoffman.scss */
+/* line 214, ../sass/_hoffman.scss */
 .field-role .field-item a:hover {
   border: 1px solid #1c1c1c;
   background-color: #f0f0f0;

@@ -35,6 +35,7 @@ $black: #1c1c1c;
 $white: #f0f0f0;
 $dark-red: #3f0708;
 $red: #8b120e;
+$line-height: 1.5em;
 
 * {
 	box-sizing: border-box;
@@ -44,6 +45,7 @@ html {
 	background-color: $black;
 	color: $white;
 	height: 100%;
+	line-height: $line-height;
 }
 
 body{
@@ -127,6 +129,74 @@ a {
 	width: 60%;
 	float: right;
 	margin: 0 0 1rem 2rem;
+	position: relative;
+	
+	.flex-control-nav a {
+		background-color: $white * 0.4;
+
+		&.flex-active {
+			background-color: $white;
+		}
+	}
+	.flex-direction-nav {
+		.flex-next {
+			right: -40px;
+		}
+		.flex-prev {
+			left: -40px;
+		}
+		a {
+			opacity: 0.5;
+			line-height: 1;
+			color: $white * 0.4;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+	}
+}
+
+.node-page  {
+	&>.field-body {
+		max-width: 40rem;
+		float: left;
+	}
+
+	.field-related-projects {
+		margin-top: $line-height * 5;
+		float: right;
+		width: 25%;
+		padding-left: 1rem;
+
+		.field-label {
+			@include webfont(mercury,light,normal);
+			text-transform: uppercase;
+			letter-spacing: -0.0333em;
+			font-size: 0.875rem;
+			line-height: 1.2;
+			border-bottom: 3px solid $blue;
+			padding-bottom: 0.25rem;
+			margin-bottom: 0.5rem;
+		}
+	}
+}
+
+.field-page-image {
+	.field-image {
+		width: 75%;
+		float: left;
+	}
+	.field-body {
+		width: 25%;
+		bottom: 0;
+		right: 0;
+		position: absolute;
+		padding-left: 1rem;
+		p {
+			margin-bottom: 0;
+		}
+	}
 }
 
 .field-role {
