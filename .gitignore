@@ -5,3 +5,4 @@ sites/*/files
 sites/*/private
 sites/default/tmp
 cache
+.sass-cache
