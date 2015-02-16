@@ -1,0 +1,178 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+// @font-face {
+// 	font-family: "Junction";
+// 	src: url("../fonts/Junction-webfont.woff");
+// 	src: url("../fonts/Junction-webfont.svg");
+// 	src: url("../fonts/Junction-webfont.eot");
+// 	src: url("../fonts/Junction-webfont.ttf");
+// }
+
+* {
+	box-sizing: border-box;
+}
+
+@mixin ideal-sans($weight,$italic) {
+	font-family: 'Ideal Sans SSm A', 'Ideal Sans SSm B', arial, sans-serif;
+	@if $weight == extraLight {
+		font-weight: 200;
+	}
+	@if $weight == light {
+		font-weight: 300;
+	}
+	@if $weight == book {
+		font-weight: 400;
+	}
+	@if $weight == medium {
+		font-weight: 500;
+	}
+	@if $weight == semibold {
+		font-weight: 600;
+	}
+	@if $weight == bold {
+		font-weight: 700;
+	}
+	@if $italic {
+		font-style: italic;
+	} @else {
+		font-style: normal;
+	}
+}
+$royal-blue: #2f67a6;
+
+.background {
+	background-image: url("../images/solomon.jpg");
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-size: cover;
+	background-position: top center;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+
+// .coming-soon {
+	// font-family: "Junction", arial, sans-serif;
+// 	@include ideal-sans(book,false);
+// }
+
+html {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	color: white;
+	text-align: center;
+	@include ideal-sans(light,false);
+	min-height: 26rem;
+
+	@media all and (min-width:32em ) {
+		min-height: 30rem;
+	}
+
+	@media all and (min-width: 40em) {
+		min-height: 35rem;
+	}
+}
+
+h1 {
+	font-size: 1.5rem;
+	text-shadow: black 0 0 .25rem; 
+	margin-top: 2rem;
+	line-height: 1.5;
+	margin-bottom: 1rem;
+	@include ideal-sans(book,false);
+
+	@media all and (min-height:30em) {
+		margin-top: 8rem;
+	}
+
+	span{
+		display: block;
+	}
+	@media all and (min-width: 25em) {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+	@media all and (min-width: 32em) {
+		font-size: 2.5rem;
+		margin-bottom: 3rem;
+	}
+	@media all and (min-width: 40em) {
+		font-size: 3rem;
+		margin-bottom: 4rem;
+		text-shadow: black 0 0 .75rem;
+	}
+	@media all and (min-width: 50em) {
+		font-size: 4rem;
+	}
+}
+
+h2 {	
+	color: $royal-blue;
+	max-width: 46rem;
+	display: block;
+	text-transform: uppercase;
+	margin: 0 auto;
+	padding:1rem;
+	@include ideal-sans(medium,false);
+	@media all and (min-width: 30em) {
+		font-size: 1.5rem;
+		padding: 2rem;
+	}
+	@media all and (min-width: 40em) {
+		padding: 3rem;
+		font-size: 2rem;
+		
+	}
+	&:after {
+		display: table;
+		content:"";
+		clear:both;
+	}
+}
+.main-wrapper {
+	padding: 1rem;
+}
+
+.countdown_amount {
+	font-family: arial, helvetica, sans-serif;
+	margin-bottom: 0.5rem;
+}
+
+.hasCountdown {
+	border: none;
+	background-color: rgba(0,0,0,.7);
+}
+
+.hasCountdown span {
+	display:block;
+}
+footer {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	text-shadow: black 0 0 .25rem; 
+
+}
+a {
+	color: white;
+	text-decoration: none;
+	border-bottom: 1px #d7d7d7 dotted;
+	display: inline-block;
+	padding: .125rem;
+	border-radius: 1px;
+	transition: all .5s;
+
+	&:hover {
+		background-color: white;
+		color: black;
+		text-shadow: black 0 0 0;
+	}
+}
